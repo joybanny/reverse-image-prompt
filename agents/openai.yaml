@@ -1,0 +1,4 @@
+interface:
+  display_name: "Reverse Visual Prompt"
+  short_description: "反推图片或视频提示词，输出 GPT Image、Midjourney 与 Seedance 版本"
+  default_prompt: "Use $reverse-image-prompt to reverse-engineer this image or description into GPT Image, Midjourney, or Seedance prompts."
