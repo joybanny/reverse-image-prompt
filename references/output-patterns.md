@@ -2,9 +2,11 @@
 
 Use these patterns when responding to users. Keep the answer copyable and compact.
 
+For Midjourney, each copyable prompt must be a self-contained text-to-image command and no more than 900 characters in total, including spaces, punctuation, and parameters. Follow the word budget and compression rules in `midjourney.md`. Keep Chinese interpretation and parameter explanations outside the command; omit them when the user asks for English only. Apply these rules to every MJ variant and later revision.
+
 ## Full Prompt Package
 
-```markdown
+````markdown
 **视觉拆解**
 可见事实：[only visible or supplied facts]
 风格推测：[labeled inferences]
@@ -17,7 +19,7 @@ Use these patterns when responding to users. Keep the answer copyable and compac
 
 **Midjourney 版**
 ```text
-[keyword prompt + parameters]
+[standalone visual description + necessary non-reference parameters; complete command <=900 characters]
 ```
 
 **Midjourney 中文释义**
@@ -34,13 +36,13 @@ Use these patterns when responding to users. Keep the answer copyable and compac
 - 更接近原图：[one concrete edit]
 - 更适合生成：[one concrete edit]
 - 常见失败限制：[negative constraints]
-```
+````
 
 ## Minimal Answer
 
-Use when the user asks for direct prompt only:
+Use when the user asks for direct prompt only. For a Midjourney-only request, return only the MJ command and, unless excluded by the user, its Chinese interpretation; do not add unrequested platform versions. The same standalone and 900-character rules apply.
 
-```markdown
+````markdown
 **GPT Image**
 ```text
 ...
@@ -60,7 +62,7 @@ Use when the user asks for direct prompt only:
 ```text
 ...
 ```
-```
+````
 
 ## If Information Is Missing
 
@@ -86,7 +88,7 @@ Map output problems to prompt edits:
 - 风格跑偏: reduce secondary styles, name one dominant medium.
 - 文字乱码: add no text/watermark/logo; for Midjourney use `--no text, letters, watermark, logo`.
 - 细节过密: reduce ornaments, prioritize readable shape.
-- 不像参考图: increase preservation language for GPT Image, or suggest image prompt/reference influence for Midjourney.
+- 不像参考图: increase preservation language for GPT Image; for Midjourney, refine the subject's defining traits, pose, placement, crop, material, palette, and rendering in words, prioritizing the most important visual differences. Keep the command standalone and within 900 characters; do not recommend image prompts or reference weights.
 
 ## Example: Game Icon
 

@@ -1,6 +1,38 @@
 # Midjourney Prompting Reference
 
-Use Midjourney prompts as compact visual keyword strings plus parameters. Write the descriptive prompt first and put parameters at the end.
+Use Midjourney prompts as self-contained text-to-image descriptions plus necessary parameters. Write concrete visual phrases or short sentences, then put parameters at the end.
+
+## Standalone Text-to-Image
+
+An image may be inspected to understand the visual target, but the resulting Midjourney command must describe that target in words and work without any attached image.
+
+- Describe the subject, defining visible traits, pose, framing, composition, medium, lighting, palette, and relevant background directly. Do not write `as in the reference image`, `same character as image 1`, `参考图片1`, or similar dependencies.
+- Do not include image URLs, local image paths, attachment/asset IDs, or image placeholders in the copyable command.
+- Do not emit image/style/character/object reference controls, including `--iw`, `--sref`, `--sw`, `--sv`, `--cref`, `--cw`, `--oref`, `--ow`, or `--edit`. This is a restriction of this skill's output mode, not a claim that Midjourney lacks these features.
+- When rewriting an existing prompt, remove reference links and reference controls even if they are already present. Preserve visual information stated in the text or actually observed; never invent what an inaccessible reference contains.
+- If the needed visual information exists only in an image that cannot be inspected, request the image or a description before reverse prompting. If the supplied text already specifies the target sufficiently, use it without requiring that image.
+- Keep later variants and iteration suggestions in the same standalone mode. Improve resemblance through concrete visual descriptions, not by recommending image upload or stronger reference weights.
+
+## Length Budget
+
+These are this skill's editing limits, not an official Midjourney maximum or a proven optimal prompt length for every version.
+
+- Aim for 60-120 English words in the descriptive body; a complex visual target may use up to about 150 words. These are flexible planning ranges: do not pad a simple prompt to reach a minimum or delete essential details merely to hit a word target.
+- The hard limit is **900 characters for the complete copyable Midjourney command**, including spaces, punctuation, and every parameter/value. It applies to every variant and every iteration. Keep the command on one line. An `/imagine` prefix, if requested, counts too.
+- Count body words by whitespace-separated tokens before the first parameter; a hyphenated expression counts as one token. Parameters are excluded from this approximate word count, but included in the character limit.
+- Chinese explanations, translations, headings, and length notes stay outside the command and are not counted. When the user requests a Chinese command, the 900-character limit still applies to that command.
+- Draft the complete command, count it, and compress before returning it if it exceeds 900 characters. Use an available string-length check when needed; do not call a prompt compliant based only on its approximate word count.
+
+Compress in this order:
+
+1. Delete filler, quality slogans, repeated synonyms, duplicated face/style instructions, and nonvisual storytelling.
+2. Combine related details into short phrases or sentences. Keep attributes next to the subject they describe.
+3. Remove optional secondary decoration and unnecessary parameters; keep `--no` lists short and specific.
+4. Preserve the user's essential subject/count, visible defining traits, pose, framing, spatial relationships, focal point, medium, key material, lighting, and palette. Preserve intentional crop or occlusion instead of adding contradictory completeness rules.
+
+Do not cut off the tail of a prompt to meet the limit. If all user-mandated details cannot fit after compression, state the conflict briefly outside the command and ask which details to prioritize; do not silently drop them or claim full fidelity.
+
+Research basis checked on 2026-10-13: [Prompt Basics](https://docs.midjourney.com/hc/en-us/articles/32023408776205-Prompt-Basics) advises concise, specific descriptions and explains that fewer details reduce control. [Describe](https://docs.midjourney.com/hc/en-us/articles/32497889043981-Describe) explicitly supports longer, more detailed prompts for V8.1/V8.2. The word ranges and 900-character budget above are local output rules, not numbers prescribed by those pages.
 
 ## Core Shape
 
@@ -16,7 +48,7 @@ Use Midjourney prompts as compact visual keyword strings plus parameters. Write 
 
 Use English for Midjourney prompts by default unless the user explicitly requests Chinese. English usually maps more directly to common Midjourney prompt conventions.
 
-Whenever producing a Midjourney prompt, include a Chinese translation/interpretation directly after the English prompt. The English prompt is the copyable MJ command; the Chinese version is for user understanding. Translate descriptive tokens into natural Chinese, but keep Midjourney parameters such as `--ar`, `--s`, `--raw`, `--no`, `--iw`, `--sref`, and `--sw` in their original form. Briefly explain important parameters in Chinese when helpful.
+By default, include a Chinese translation/interpretation directly after the English prompt, unless the user requests English only or no explanation. The English prompt is the copyable MJ command; the Chinese version is for understanding and stays outside that command. Translate descriptive phrases into natural Chinese, keep emitted parameters such as `--ar`, `--s`, `--raw`, and `--no` in their original form, and briefly explain important parameters when helpful. Translate the final compressed prompt without reintroducing removed references or details.
 
 ## Descriptive Tokens
 
@@ -41,9 +73,7 @@ Prioritize these visual dimensions:
 - `--no`: list unwanted elements, such as `text, watermark, logo, extra objects, cropped subject`.
 - `--chaos`: use only when the user wants exploratory variety.
 - `--weird`: use only when the user wants unusual or uncanny outcomes.
-- `--iw`: use with image prompts to control image-reference influence.
-- `--sref` and `--sw`: use for style reference when the user supplies or requests a style reference.
-- Character/object reference parameters can be suggested when the user wants a consistent person, mascot, or object across images, but do not invent reference URLs.
+- Use only parameters that do not require external reference material. For visual consistency, repeat stable descriptive traits in words; follow the standalone rules above in the prompt, translation, and iteration advice.
 
 Do not claim parameter availability for a specific Midjourney version unless verified in the current context. If the user needs current version-specific behavior, verify official docs first.
 
@@ -100,4 +130,6 @@ Convert GPT Image briefs into Midjourney by:
 2. Keeping the most visual nouns and modifiers.
 3. Moving output rules into parameters.
 4. Moving unwanted elements into `--no`.
-5. Keeping composition, lighting, palette, and medium as compact tokens.
+5. Keeping composition, lighting, palette, and medium as compact phrases or short sentences.
+6. Replacing reference-dependent instructions with observed or supplied visual descriptions and removing all reference links and controls.
+7. Counting the final complete command and compressing it to 900 characters or fewer.

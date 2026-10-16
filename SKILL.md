@@ -16,7 +16,7 @@ Do not generate an image unless the user explicitly asks. This skill writes prom
 1. If the user provides an image, inspect the image first. Record only visible facts before making style or intent inferences.
 2. If the user provides a text description, extract the target fields from the text before asking questions.
 3. If the user provides both image and text, treat the image as the visual reference and the text as the desired change or output intent.
-4. If an image path is provided but the environment cannot inspect it, ask the user to upload the image or use an available image-inspection tool before reverse prompting.
+4. If an image path is provided but the environment cannot inspect it, ask the user to upload the image or use an available image-inspection tool before reverse prompting. For Midjourney, if the supplied text already describes the target sufficiently, use that text directly without requiring the inaccessible image; do not infer its unseen contents.
 5. If the target platform is missing, default to Seedance for an explicitly video-oriented request; otherwise output both GPT Image and Midjourney versions.
 
 ## Conversation Workflow
@@ -56,7 +56,7 @@ Use a short, practical dialogue. Avoid interrogating the user when enough inform
 Load references only as needed:
 
 - Use `references/gpt-image.md` when writing GPT Image prompts or converting to a production-brief style.
-- Use `references/midjourney.md` when writing Midjourney prompts or converting to keyword/parameter style.
+- Use `references/midjourney.md` when writing Midjourney prompts or converting to keyword/parameter style. Every Midjourney prompt must be a self-contained text-to-image prompt: translate observed reference features into text, and omit image links, asset placeholders, reference-dependent wording, and image/style/character reference parameters. This also applies when rewriting existing prompts and giving iteration advice.
 - Use `references/seedance.md` when writing Seedance video prompts, including reference-material binding, video editing, or extension prompts.
 - Use `references/output-patterns.md` for final answer structure and reusable templates.
 
@@ -73,3 +73,4 @@ Before finalizing, check:
 - Lighting, material, palette, and background are not vague filler.
 - Negative constraints are specific.
 - GPT Image, Midjourney, and Seedance versions are not identical; each follows its platform style.
+- For each Midjourney command, verify that it can be used without attaching reference images and that the complete command is at most 900 characters, including spaces, punctuation, and parameters. See `references/midjourney.md` for the length budget and compression priorities.
